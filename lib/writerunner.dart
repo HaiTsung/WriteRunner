@@ -10,7 +10,15 @@ bool wordLengthRandom = false;
 
 String language = "en";
 
-var languages = {"English" : "en", "Spanish" : "es", "Italian" : "it"};
+var languages = {
+  1: ["English", "en"],
+  2: ["Spanish", "es"],
+  3: ["Italian", "it"],
+  4: ["German", "de"],
+  5: ["French", "fr"],
+  6: ["Chinese", "zh"],
+  7: ["Brazilian Portugese", "pt-br"],
+};
 
 var ansiColors = {"red": "\x1B[31m", "white": "\x1B[0m", "green": "\x1B[32m"};
 
@@ -25,6 +33,9 @@ void main() {
   switch (input) {
     case 1:
       playGame();
+      break;
+    case 2:
+      settingsMenu();
       break;
     default:
   }
@@ -76,6 +87,7 @@ void settingsMenu() {
       break;
 
     case "3":
+      changeLanguage();
       break;
 
     case "4":
@@ -85,20 +97,22 @@ void settingsMenu() {
   }
 }
 
-void changeLanguage(){
-  print("Change language");
-  print("1: English");
-  print("2: Spanish");
-  print("3: Italian");
-  print("4: German");
-  print("5: French");
-  print("6: Chinese");
-  print("7: Brazilian Portuguese");
+void changeLanguage() {
+  print("Change language (currently: $language)");
+
+  for (var i = 1; i < languages.length; i++) {
+    var language = languages[i]!;
+    print("$i: ${language[0]} - ${language[1]}");
+  }
   String? input = stdin.readLineSync();
   int inputInt = int.parse(input!);
-  if (inputInt < 8 && inputInt > 0) {
-    
+  if (inputInt <= languages.length && inputInt > 0) {
+    language = languages[inputInt]![1];
+    print("Changed language to ${languages[inputInt]![0]}");
+  } else {
+    print("Not a valid input");
   }
+  main();
 }
 
 void dumpScreen() {}
