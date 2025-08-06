@@ -8,6 +8,10 @@ int wordCount = 100;
 int wordLength = 7;
 bool wordLengthRandom = false;
 
+String language = "en";
+
+var languages = {"English" : "en", "Spanish" : "es", "Italian" : "it"};
+
 var ansiColors = {"red": "\x1B[31m", "white": "\x1B[0m", "green": "\x1B[32m"};
 
 void main() {
@@ -25,8 +29,6 @@ void main() {
     default:
   }
 }
-
-
 
 Future<void> playGame() async {
   var loading = startLoadingAnimation();
@@ -74,7 +76,6 @@ void settingsMenu() {
       break;
 
     case "3":
-
       break;
 
     case "4":
@@ -84,9 +85,23 @@ void settingsMenu() {
   }
 }
 
-void dumpScreen(){
-
+void changeLanguage(){
+  print("Change language");
+  print("1: English");
+  print("2: Spanish");
+  print("3: Italian");
+  print("4: German");
+  print("5: French");
+  print("6: Chinese");
+  print("7: Brazilian Portuguese");
+  String? input = stdin.readLineSync();
+  int inputInt = int.parse(input!);
+  if (inputInt < 8 && inputInt > 0) {
+    
+  }
 }
+
+void dumpScreen() {}
 
 void changeWordCount() {
   print("Change loaded word count(currently: $wordCount)");
@@ -94,27 +109,27 @@ void changeWordCount() {
   int? inputInt = int.tryParse(input!);
   if (inputInt == null) {
     print("Can't change word count to $input!");
-  }
-  else{
+  } else {
     wordCount = inputInt;
     print("Changed word count to $inputInt!");
   }
   main();
 }
 
-void changeWordLength(){
+void changeWordLength() {
   String current = wordLengthRandom ? "Random" : wordLength.toString();
-  print("Change Word Length (0 for Random or 1-10 for 1-10 Characters; currently: $current)");
+  print(
+    "Change Word Length (0 for Random or 1-10 for 1-10 Characters; currently: $current)",
+  );
   String? input = stdin.readLineSync();
   int? inputInt = int.tryParse(input!);
-  if (inputInt == null || inputInt > 10 ||inputInt < 0) {
+  if (inputInt == null || inputInt > 10 || inputInt < 0) {
     print("Not a valid number");
   }
   if (inputInt == 0) {
     wordLengthRandom = true;
     print("Word length is now random");
-  }
-  else{
+  } else {
     wordLength = inputInt!;
     print("Word length is now $wordLength");
   }
@@ -145,11 +160,11 @@ Future<void> loadWords() async {
   Uri url;
   if (wordLengthRandom) {
     url = Uri.parse(
-      "https://random-word-api.herokuapp.com/word?number=$wordCount",
+      "https://random-word-api.herokuapp.com/word?number=$wordCount&lang=$language",
     );
   } else {
     url = Uri.parse(
-      "https://random-word-api.herokuapp.com/word?length=$wordLength&number=$wordCount",
+      "https://random-word-api.herokuapp.com/word?length=$wordLength&number=$wordCount&lang=$language",
     );
   }
   var response = await http.get(url);
