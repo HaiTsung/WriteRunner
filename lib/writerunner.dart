@@ -86,7 +86,9 @@ Future<void> playGame() async {
   print("Correct: $correctAnswers");
   DateTime endTime = DateTime.now();
   print("in ${endTime.difference(startTime).inMilliseconds} ms");
-  print("Thats ${(correctAnswers / (endTime.difference(startTime).inMilliseconds/ 1000) * 60).toStringAsFixed(1)} wpm");
+  print(
+    "Thats ${(correctAnswers / (endTime.difference(startTime).inMilliseconds / 1000) * 60).toStringAsFixed(1)} wpm",
+  );
 }
 
 void settingsMenu() {
@@ -94,7 +96,8 @@ void settingsMenu() {
   print("1: Change word Length");
   print("2: Change loaded word count");
   print("3: Change word Language");
-  print("4: back");
+  print("4: Change type duration");
+  print("5: back");
   var input = stdin.readLineSync();
   switch (input) {
     case "1":
@@ -110,10 +113,27 @@ void settingsMenu() {
       break;
 
     case "4":
+      changeTypeDuartion();
+      break;
+
+    case "5":
       main();
+      break;
     default:
       settingsMenu();
   }
+}
+
+void changeTypeDuartion() {
+  print("Chamge type duration (currently: $duration s)");
+  var input = stdin.readLineSync();
+  int inputInt = int.parse(input!);
+  if (inputInt > 300 || inputInt < 5) {
+    print("Not a valid input");
+  }
+  duration = inputInt;
+  print("Changed type duartion to $duration s");
+  main();
 }
 
 void changeLanguage() {
