@@ -58,16 +58,29 @@ Future<void> playGame() async {
 
   bool loadingNextWord = false;
 
-  while (currentWord < words.length) {
+  DateTime startTime = DateTime.now();
+  DateTime estimatedEndTime = startTime.add(Duration(seconds: 60));
+
+  int correctAnswers = 0;
+  int wrongAnswers = 0;
+  while (currentWord < words.length &&
+      startTime.compareTo(estimatedEndTime) >= 0) {
     print(words[currentWord]);
     String? input = stdin.readLineSync();
-    if (input == words[currentWord]) {
-      print(ansiColors["green"]! + input! + ansiColors["white"]!);
+    if (input!.toLowerCase() == words[currentWord]) {
+      print(ansiColors["green"]! + input + ansiColors["white"]!);
+      correctAnswers++;
     } else {
-      print(colorizeWord(input!, words[currentWord]));
+      print(colorizeWord(input, words[currentWord]));
+      wrongAnswers++;
     }
     currentWord++;
   }
+
+  print("Wrong: $wrongAnswers");
+  print("Correct: $correctAnswers");
+  DateTime endTime = DateTime.now();
+  print("in ${endTime.difference(startTime).inSeconds}s");
 }
 
 void settingsMenu() {
