@@ -10,6 +10,8 @@ bool wordLengthRandom = false;
 
 String language = "en";
 
+int duration = 10;
+
 var languages = {
   1: ["English", "en"],
   2: ["Spanish", "es"],
@@ -59,12 +61,15 @@ Future<void> playGame() async {
   bool loadingNextWord = false;
 
   DateTime startTime = DateTime.now();
-  DateTime estimatedEndTime = startTime.add(Duration(seconds: 60));
+
+  DateTime estimatedEndTime = startTime.add(Duration(seconds: duration));
+  print(startTime.toIso8601String());
+  print(estimatedEndTime.toIso8601String());
 
   int correctAnswers = 0;
   int wrongAnswers = 0;
   while (currentWord < words.length &&
-      startTime.compareTo(estimatedEndTime) >= 0) {
+      DateTime.now().compareTo(estimatedEndTime) <= 0) {
     print(words[currentWord]);
     String? input = stdin.readLineSync();
     if (input!.toLowerCase() == words[currentWord]) {
@@ -80,7 +85,8 @@ Future<void> playGame() async {
   print("Wrong: $wrongAnswers");
   print("Correct: $correctAnswers");
   DateTime endTime = DateTime.now();
-  print("in ${endTime.difference(startTime).inSeconds}s");
+  print("in ${endTime.difference(startTime).inMilliseconds} ms");
+  print("Thats ${(correctAnswers / (endTime.difference(startTime).inMilliseconds/ 1000) * 60).toStringAsFixed(1)} wpm");
 }
 
 void settingsMenu() {
